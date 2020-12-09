@@ -1,0 +1,28 @@
+{
+    "name": "rllyhz/php-mvc-native-for-project-starter",
+    "description": "Starter PHP for building projects.",
+    "keywords": [
+        "PHP",
+        "PHP MVC"
+    ],
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "rllyhz",
+            "email": "rullyihza00@gmail.com",
+            "role": "owner",
+            "homepage": "https://github.com/rllyhz"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Lib\\": "lib/"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.2@dev"
+    }
+}
