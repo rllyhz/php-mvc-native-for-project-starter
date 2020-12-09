@@ -1,2 +1,8 @@
 #!/bin/env php
 <?php
+
+require_once __DIR__ . "/vendor/autoload.php";
+
+use Lib\Rllyhz\PhpMVC\Bootstrap\Bootstrap;
+
+Bootstrap::build(__DIR__, $argv, true);
