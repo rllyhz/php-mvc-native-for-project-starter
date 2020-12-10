@@ -7,6 +7,8 @@
 
 namespace Lib\Rllyhz\PhpMVC\Bootstrap\Construct;
 
+use Lib\Rllyhz\PhpMVC\Http\Response as HttpResponse;
+
 /**
  * Class Response
 
@@ -14,7 +16,7 @@ namespace Lib\Rllyhz\PhpMVC\Bootstrap\Construct;
  * 
  * @package Lib\Rllyhz\PhpMVC\Bootstrap\Construct
  */
-class Response
+class Response extends HttpResponse
 {
   // 
 }

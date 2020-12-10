@@ -17,11 +17,42 @@ namespace Lib\Rllyhz\PhpMVC\Bootstrap\Construct;
 class Application
 {
   /**
+   * @var string $rootDirectory;
+   */
+  private string $rootDirectory;
+
+  /**
+   * @var array $routes;
+   */
+  private array $routes;
+
+  /**
    * Application Constructor
    * 
-   * @param array $argv
+   * @param string $rootDirectory
    */
   public function __construct(string $rootDirectory)
   {
+    //
+  }
+
+  private function prepareUp()
+  {
+    // 
+  }
+
+  private function loadRoutes()
+  {
+    // 
+  }
+
+  private function loadHelpers()
+  {
+    // 
+  }
+
+  private function listen()
+  {
+    // 
   }
 }

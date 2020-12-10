@@ -7,7 +7,7 @@
 
 namespace Lib\Rllyhz\PhpMVC\Bootstrap;
 
-use Lib\Rllyhz\PhpMVC\Bootstrap\Construct\Application;
+use App\Core\Application;
 use Lib\Rllyhz\PhpMVC\Bootstrap\Terminal\Terminal;
 
 /**
