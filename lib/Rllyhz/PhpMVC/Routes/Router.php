@@ -5,7 +5,9 @@
  * @link https://github.com/rllyhz
  */
 
-namespace Lib\Rllyhz\PhpMVC\Bootstrap;
+namespace Lib\Rllyhz\PhpMVC\Routes;
+
+use Lib\Rllyhz\PhpMVC\Routes\Router\MainRouter;
 
 /**
  * Class Route
@@ -14,7 +16,7 @@ namespace Lib\Rllyhz\PhpMVC\Bootstrap;
  * 
  * @package Lib\Rllyhz\PhpMVC\Routes
  */
-class Route
+class Router extends MainRouter
 {
   // 
 }

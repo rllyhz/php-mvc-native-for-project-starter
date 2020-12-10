@@ -2,10 +2,12 @@
 
 namespace App\Core;
 
-use Lib\Rllyhz\PhpMVC\Bootstrap\Route as BaseRoute;
+use Lib\Rllyhz\PhpMVC\Routes\Router as BaseRoute;
 
 /**
  * Class Route
+ * 
+ * Router for app.
  * 
  * @package App\Core
  */

@@ -16,5 +16,15 @@ namespace Lib\Rllyhz\PhpMVC\Http;
  */
 class Response
 {
-  // 
+  private Request $request;
+
+  public function __construct(Request $request)
+  {
+    $this->request = $request;
+  }
+
+  public static function send(string $message, int $statusCode)
+  {
+    // 
+  }
 }
