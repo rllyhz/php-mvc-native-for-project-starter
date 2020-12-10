@@ -16,20 +16,31 @@ use Lib\Rllyhz\PhpMVC\Bootstrap\Terminal\CommandHandler;
  */
 class ServeCommand extends CommandHandler
 {
-  public function __construct(array $params)
+  /**
+   * ServeCommand Constructor
+   * 
+   * @param array $params
+   */
+  public function __construct(string $rootDirectory, array $params)
   {
+    $this->rootDirectory = $rootDirectory;
+    $this->params = $params;
     $this->host = $_ENV["APP_HOST"];
     $this->port = $_ENV["APP_PORT"];
-    $this->params = $params;
 
     $this->serve();
   }
 
+  /**
+   * serve function
+   * 
+   * serves web using built-in web server available in php.
+   */
   private function serve()
   {
-    $this->run("print 'Hello'");
+    $this->showHeading("PHP MVC Native by Rllyhz");
 
-    return $this->run(
+    return $this->runShellScript(
       "php -S {$this->host}:{$this->port} -t public/"
     );
   }

@@ -30,7 +30,7 @@ class Bootstrap
     self::loadEnv($rootDirectory);
 
     if ($isRunningToCommandLine) {
-      new Terminal($argv);
+      new Terminal($rootDirectory, $argv);
     } else {
       new Application($rootDirectory);
     }

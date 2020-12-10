@@ -18,6 +18,11 @@ use Lib\Rllyhz\PhpMVC\Bootstrap\Terminal\Commands\ServeCommand;
 class Terminal
 {
   /**
+   * @var string $rootDirectory
+   */
+  private string $rootDirectory;
+
+  /**
    * @var array $argv
    */
   private array $argv;
@@ -42,9 +47,10 @@ class Terminal
    * 
    * @param array $argv
    */
-  public function __construct(array $argv)
+  public function __construct(string $rootDirectory, array $argv)
   {
     $this->argv = $argv;
+    $this->rootDirectory = $rootDirectory;
     $this->params = [];
     $this->activeCommand = [];
 
@@ -139,6 +145,6 @@ class Terminal
     }
 
     $handler = $this->activeCommand["handler"];
-    new $handler($this->params);
+    new $handler($this->rootDirectory, $this->params);
   }
 }

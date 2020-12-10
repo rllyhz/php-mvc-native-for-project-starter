@@ -15,6 +15,11 @@ namespace Lib\Rllyhz\PhpMVC\Bootstrap\Terminal;
 class CommandHandler
 {
   /**
+   * @var string rootDirectory
+   */
+  protected string $rootDirectory;
+
+  /**
    * @var string host
    */
   protected string $host;
@@ -29,8 +34,36 @@ class CommandHandler
    */
   protected array $params;
 
-  protected function run(string $shellCommand)
+  /**
+   * runShellScript function
+   * 
+   * run a shell script command.
+   * 
+   * @param string $shellCommand
+   * @return string|null
+   */
+  protected function runShellScript(string $shellCommand)
   {
     return shell_exec($shellCommand);
+  }
+
+  protected function showHeading(string $title)
+  {
+    return $this->show("\n\n|| $title ||\n\n\n");
+  }
+
+  protected function alert(string $message)
+  {
+    echo "\n$message\n";
+  }
+
+  protected function message(string $message)
+  {
+    echo "\n$message\n";
+  }
+
+  protected function show(string $message)
+  {
+    echo $message;
   }
 }
