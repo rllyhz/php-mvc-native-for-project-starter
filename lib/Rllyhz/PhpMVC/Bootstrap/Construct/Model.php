@@ -8,20 +8,13 @@
 namespace Lib\Rllyhz\PhpMVC\Bootstrap\Construct;
 
 /**
- * Class Application
+ * Class Model
 
- * Main Application.
+ * Main Model.
  * 
  * @package Lib\Rllyhz\PhpMVC\Bootstrap\Construct
  */
-class Application
+class Model
 {
-  /**
-   * Application Constructor
-   * 
-   * @param array $argv
-   */
-  public function __construct(string $rootDirectory)
-  {
-  }
+  // 
 }

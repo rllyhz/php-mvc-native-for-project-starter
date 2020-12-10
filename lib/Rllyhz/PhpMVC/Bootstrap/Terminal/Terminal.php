@@ -14,6 +14,8 @@ use Lib\Rllyhz\PhpMVC\Bootstrap\Terminal\Commands\ServeCommand;
  * Class Terminal
  * 
  * Handles command from cli.
+ * 
+ * @package Lib\Rllyhz\PhpMVC\Bootstrap\Terminal
  */
 class Terminal
 {

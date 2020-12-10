@@ -9,6 +9,10 @@ namespace Lib\Rllyhz\PhpMVC\Bootstrap\Construct;
 
 /**
  * Class Controller
+
+ * Main Controller.
+ * 
+ * @package Lib\Rllyhz\PhpMVC\Bootstrap\Construct
  */
 class Controller
 {

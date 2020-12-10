@@ -13,6 +13,8 @@ use Lib\Rllyhz\PhpMVC\Bootstrap\Terminal\CommandHandler;
  * Class ServeCommand
  * 
  * Serves Php web server on {host}:{port}.
+ * 
+ * @package Lib\Rllyhz\PhpMVC\Bootstrap\Terminal\CommandHandler
  */
 class ServeCommand extends CommandHandler
 {

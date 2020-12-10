@@ -14,6 +14,8 @@ use Lib\Rllyhz\PhpMVC\Bootstrap\Terminal\Terminal;
  * Class Bootstrap
  * 
  * Builds an instance app.
+ * 
+ * @package Lib\Rllyhz\PhpMVC\Bootstrap
  */
 class Bootstrap
 {

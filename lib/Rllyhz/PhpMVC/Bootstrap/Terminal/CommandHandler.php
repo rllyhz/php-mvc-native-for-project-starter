@@ -11,6 +11,8 @@ namespace Lib\Rllyhz\PhpMVC\Bootstrap\Terminal;
  * Class CommandHandler
  * 
  * Command handler.
+ * 
+ * @package Lib\Rllyhz\PhpMVC\Bootstrap\Terminal
  */
 class CommandHandler
 {

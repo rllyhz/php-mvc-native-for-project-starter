@@ -9,6 +9,10 @@ namespace Lib\Rllyhz\PhpMVC\Bootstrap\Construct;
 
 /**
  * Class Request
+
+ * Main Request.
+ * 
+ * @package Lib\Rllyhz\PhpMVC\Bootstrap\Construct
  */
 class Request
 {

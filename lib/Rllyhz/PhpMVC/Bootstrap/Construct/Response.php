@@ -9,6 +9,10 @@ namespace Lib\Rllyhz\PhpMVC\Bootstrap\Construct;
 
 /**
  * Class Response
+
+ * Main Response.
+ * 
+ * @package Lib\Rllyhz\PhpMVC\Bootstrap\Construct
  */
 class Response
 {

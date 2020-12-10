@@ -14,6 +14,8 @@ use Lib\Rllyhz\PhpMVC\Bootstrap\Terminal\CommandHandler;
  * Class CeateCommand
  * 
  * Creates file like controllers, models, etc.
+ * 
+ * @package Lib\Rllyhz\PhpMVC\Bootstrap\Terminal\CommandHandler
  */
 class CreateCommand extends CommandHandler
 {
@@ -86,6 +88,8 @@ use App\Core\Controller;
 
 /**
  * Class $fileName
+ * 
+ * @package App\Core
 */
 class $fileName extends Controller
 {
