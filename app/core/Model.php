@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-use Lib\Rllyhz\PhpMVC\Bootstrap\Construct\Model as AppModel;
+use Lib\Rllyhz\PhpMVCiers\Bootstrap\Construct\Model as AppModel;
 
 /**
  * Class Model

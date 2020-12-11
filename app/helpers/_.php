@@ -1,11 +1,11 @@
 <?php
 
-use Lib\Rllyhz\PhpMVC\Bootstrap\Construct\Application;
-use Lib\Rllyhz\PhpMVC\Helpers\RequireHelper;
+use Lib\Rllyhz\PhpMVCiers\Helpers\AppHelper;
+use Lib\Rllyhz\PhpMVCiers\Helpers\RequireHelper;
 
 function view(string $view, $data = null)
 {
-  $fileView = RequireHelper::getValidFormatFile($view, constant(Application::$VIEWS_FOLDER));
+  $fileView = RequireHelper::getValidFormatFile($view, constant(AppHelper::$VIEWS_FOLDER));
 
   if (RequireHelper::fileExists($fileView)) {
     return RequireHelper::file($fileView, $data);

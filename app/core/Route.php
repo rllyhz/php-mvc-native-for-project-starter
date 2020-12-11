@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-use Lib\Rllyhz\PhpMVC\Routes\Router as BaseRoute;
+use Lib\Rllyhz\PhpMVCiers\Routes\Router as BaseRoute;
 
 /**
  * Class Route

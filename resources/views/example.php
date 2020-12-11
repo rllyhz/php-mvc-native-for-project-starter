@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome | <?= $_SERVER["APP_NAME"]; ?></title>
+  <title>Example Page | <?= $_SERVER["APP_NAME"]; ?></title>
 
   <style>
     *,

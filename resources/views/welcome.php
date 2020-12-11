@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome | <?= $_SERVER["APP_NAME"]; ?></title>
+  <title>Welcome Page | <?= $_SERVER["APP_NAME"]; ?></title>
 
   <style>
     *,
@@ -70,7 +70,7 @@
 <body>
   <div class="container">
     <div class="heading">
-      <h2>Welcome to PHP MVC for Starter Project</h2>
+      <h2>Welcome to PHP MVCiers for Starter Project</h2>
     </div>
     <div class="content">
       <p>&copy; Built by Rllyhz.</p>

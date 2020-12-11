@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-use Lib\Rllyhz\PhpMVC\Bootstrap\Construct\Application as App;
+use Lib\Rllyhz\PhpMVCiers\Bootstrap\Construct\Application as App;
 
 /**
  * Class Application

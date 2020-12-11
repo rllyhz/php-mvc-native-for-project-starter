@@ -17,3 +17,4 @@ Route::get("greeting/{name}/{age}", function ($request, $name, $age) {
 });
 
 Route::get("example/index", 'ExampleController@index');
+Route::get("example/say/{name}", 'ExampleController@greeting');

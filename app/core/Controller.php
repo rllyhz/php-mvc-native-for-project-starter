@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-use Lib\Rllyhz\PhpMVC\Bootstrap\Construct\Controller as BaseController;
+use Lib\Rllyhz\PhpMVCiers\Bootstrap\Construct\Controller as BaseController;
 
 /**
  * Class Controller
