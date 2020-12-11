@@ -10,12 +10,17 @@ namespace Lib\Rllyhz\PhpMVC\Helpers;
 /**
  * Class RequireHelper
  * 
- * Helpers to assistant main app require php files safely.
+ * Helper to assistant main app to require php files safely.
  * 
  * @package Lib\Rllyhz\PhpMVC\Helpers
  */
 class RequireHelper
 {
+  /**
+   * Get valid format file (.php)
+   * 
+   * @return string $validFormattedFile
+   */
   public static function getValidFormatFile(string $fileName, string $folder = "")
   {
     if ($folder == "") {
@@ -24,23 +29,44 @@ class RequireHelper
 
     return $folder . DIRECTORY_SEPARATOR . $fileName . ".php";
   }
-  public static function fileExists($file)
+
+  /**
+   * Check a php file exists.
+   * 
+   * @param string $pathToFile
+   * @return bool $exists
+   */
+  public static function fileExists(string $pathToFile)
   {
-    if (file_exists($file)) {
+    if (file_exists($pathToFile)) {
       return true;
     }
 
     return false;
   }
 
-  public static function file(string $pathToFile)
+  /**
+   * Require a php file.
+   * 
+   * @param string $pathToFile
+   */
+  public static function file(string $pathToFile, $data = null)
   {
-    // require a php file
+    if ($data != null) {
+      extract($data);
+    }
+
+    require_once $pathToFile;
   }
 
-  public static function fileInFolder(string $folder, $fileName)
+  /**
+   * Require a php file in specific folder.
+   * 
+   * @param string $pathToFile
+   * @param string $fileName
+   */
+  public static function fileInFolder(string $folder, string $fileName)
   {
-    // require php file in a folder
     $file = $folder . DIRECTORY_SEPARATOR . $fileName;
 
     if (self::fileExists($file)) {
@@ -50,8 +76,20 @@ class RequireHelper
     // throw an Error
   }
 
-  public static function filesInfolder($folderPath, $option)
+  /**
+   * Require all files in specific folder.
+   * 
+   * @param string $folder
+   * @param array $option
+   */
+  public static function filesInfolder($folder, $option = null)
   {
-    // require all php files in a folder
+    if ($option != null) {
+    }
+
+    $files = glob($folder . '/*.php');
+    foreach ($files as $file) {
+      require_once $file;
+    }
   }
 }

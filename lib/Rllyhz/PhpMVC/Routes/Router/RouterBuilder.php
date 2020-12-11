@@ -91,6 +91,22 @@ trait RouterBuilder
     // throw an Error
   }
 
+  /**
+   * addRouteWithView() function
+   * 
+   * Adds available routes with view.
+   * 
+   * @param Lib\Rllyhz\PhpMVC\Routes\Router\RouteSchema
+   */
+  public function addRouteWithView(RouteSchema $route, string $method)
+  {
+    if ($this->isMethodAvailable($method)) {
+      return array_push($this->routes[$method], $route);
+    }
+
+    // throw an Error
+  }
+
   public function validateUri(string $uri)
   {
     if ($uri == "/") {

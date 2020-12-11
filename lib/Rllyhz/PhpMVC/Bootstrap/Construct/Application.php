@@ -9,6 +9,9 @@ namespace Lib\Rllyhz\PhpMVC\Bootstrap\Construct;
 
 use App\Core\Route;
 use Lib\Rllyhz\PhpMVC\Helpers\RequireHelper;
+use Lib\Rllyhz\PhpMVC\Helpers\RouterHelper;
+use Lib\Rllyhz\PhpMVC\Helpers\SecurityHelper;
+use Lib\Rllyhz\PhpMVC\Http\Client\Request as ClientRequest;
 use Lib\Rllyhz\PhpMVC\Http\Request;
 use Lib\Rllyhz\PhpMVC\Http\Response;
 use Lib\Rllyhz\PhpMVC\Http\Server;
@@ -44,6 +47,11 @@ class Application
   private Request $request;
   private Response $response;
 
+  private string $requestURI;
+  private array $paramKeys;
+  private array $params;
+  private array $data;
+
   /**
    * Application Constructor
    * 
@@ -60,9 +68,16 @@ class Application
     $this->response = new Response($this->request);
     $this->routes = $this->getRoutes();
 
+    $this->loadHelpers();
+
     $this->resolve();
   }
 
+  /**
+   * prepareUp function
+   * 
+   * Prepares up the app.
+   */
   private function prepareUp()
   {
     if (!defined(self::$SITE_URL)) {
@@ -91,32 +106,71 @@ class Application
     }
   }
 
+  /**
+   * getRoutes function
+   * 
+   * Get all of available routes.
+   * 
+   * @return mixed $routes
+   */
   private function getRoutes()
   {
     RequireHelper::fileInFolder($this->rootDirectory, "routes" . DIRECTORY_SEPARATOR . "web.php");
     return Route::getRoutes();
   }
 
+  /**
+   * loadHelpers function
+   * 
+   * Loads helper files.
+   * 
+   */
+  private function loadHelpers()
+  {
+    $helperFolder = $this->rootDirectory . DIRECTORY_SEPARATOR . "app" . DIRECTORY_SEPARATOR . "helpers";
+
+    return RequireHelper::filesInfolder($helperFolder);
+  }
+
+  /**
+   * resolve function
+   * 
+   * Resolve the request URI.
+   * 
+   * @return mixed $routes
+   */
   private function resolve()
   {
     $method = $this->server->requestMethod;
     $availableRoutes = $this->routes[$method];
-    $requestURI = $this->getRequestURI();
+    $this->requestURI = $this->getRequestURI();
 
     if (!empty($availableRoutes)) {
 
       foreach ($availableRoutes as $route) {
 
-        if ($route->getUri() == $requestURI) {
-          $this->handleRoute($route);
+        if (RouterHelper::expectsAnyParams($route)) {
+          $result = RouterHelper::resolve($route, $this->requestURI);
+
+          if ($result["matched"]) {
+            $this->paramKeys = $result["paramKeys"];
+
+            return $this->handleRoute($route);
+          }
+        } else if ($route->getUri() == $this->requestURI) {
+          $this->paramKeys = RouterHelper::getParams($route);
+          return $this->handleRoute($route);
         }
-        // 
       }
 
+      $this->notFound();
       // throw an Error
     }
   }
 
+  /**
+   * Gets the requested URI
+   */
   private function getRequestURI()
   {
     $uri = $this->server->requestURI;
@@ -130,24 +184,126 @@ class Application
     return trim($uri[0], "/");
   }
 
+  /**
+   * handleRoute function
+   * 
+   * Handles matched route.
+   */
   private function handleRoute(RouteSchema $route)
   {
-    if (is_object($route->getHandler()) && is_callable($route->getHandler())) {
-      echo call_user_func(
-        $route->getHandler(),
-        $this->request,
-        $this->response
+    // If its view not null
+    if ($route->getView() != null) {
+
+      $fileView = RequireHelper::getValidFormatFile(
+        $route->getView(),
+        constant(self::$VIEWS_FOLDER)
       );
+
+      if (RequireHelper::fileExists($fileView)) {
+        return RequireHelper::file($fileView);
+      } else {
+        // $this->notFound();
+        // throw an Error
+        return;
+      }
+      // 
+    }
+
+
+    $this->params = [];
+    $uriArray = explode("/", $route->getUri());
+    $requestURIArray = explode("/", $this->requestURI);
+
+    foreach ($uriArray as $key => $value) {
+      $value = str_replace("{", "", $value);
+      $value = str_replace("}", "", $value);
+
+      if (isset($requestURIArray[$key])) {
+        array_push($this->params, [$value => $requestURIArray[$key]]);
+      } else {
+        return $this->notFound();
+        // throw an Error
+      }
+    }
+
+    $this->params = array_filter($this->params, function ($dt) {
+      $dtKey = array_key_first($dt);
+
+      foreach ($this->paramKeys as $key) {
+        if ($dtKey == $key) {
+          return true;
+        }
+      }
+    });
+
+    $this->data = [];
+
+    foreach ($this->params as $param) {
+      $param = SecurityHelper::sanitizeString(array_values($param)[0]);
+      $param = preg_replace("[%20]", " ", $param);
+
+      $this->data[] = $param;
+    }
+
+    /**
+     * Checking type of handler
+     */
+    // if it's callable then invoke.
+    if (is_object($route->getHandler()) && is_callable($route->getHandler())) {
+
+      if ($this->server->requestMethod == "GET") {
+
+        $length = sizeof($this->data);
+
+        if ($length == 0) {
+          echo call_user_func(
+            $route->getHandler(),
+            $this->request
+          );
+        } else if ($length == 1) {
+          echo call_user_func(
+            $route->getHandler(),
+            $this->request,
+            $this->data[0]
+          );
+        } else if ($length == 2) {
+          echo call_user_func(
+            $route->getHandler(),
+            $this->request,
+            $this->data[0],
+            $this->data[1]
+          );
+        } else if ($length == 3) {
+          echo call_user_func(
+            $route->getHandler(),
+            $this->request,
+            $this->data[0],
+            $this->data[1],
+            $this->data[2]
+          );
+        }
+        // 
+      } else {
+
+        $request = new ClientRequest($this->request);
+        echo call_user_func(
+          $route->getHandler(),
+          $request
+        );
+        // 
+      }
 
       die;
     }
 
+    // if it's a string then it must be a controller and its method.
     if (is_string($route->getHandler())) {
 
       $controllerFormat = $route->getHandler();
 
       // check valid controller and method name
       if (strpos($controllerFormat, "@") == false) {
+        // $this->notFound();
         // throw an Error
         return;
       }
@@ -161,6 +317,11 @@ class Application
     }
   }
 
+  /**
+   * runController function
+   * 
+   * Instantiates the selected Controller and invokes its method.
+   */
   private function runController(string $controllerName, string $methodName)
   {
     $controllerFile = RequireHelper::getValidFormatFile(
@@ -169,6 +330,7 @@ class Application
     );
 
     if (!RequireHelper::fileExists($controllerFile)) {
+      // $this->notFound();
       // throw an Error
       return;
     }
@@ -181,12 +343,37 @@ class Application
 
     if (!method_exists($currentController, $methodName)) {
       // throw an Error
+      // $this->notFound();
       return;
     }
 
     /**
-     * Invoking selected method of the selected controller
+     * Invoking selected method of the selected controller with any paramaters.
      */
-    $currentController->{$methodName}($this->request);
+    if ($this->server->requestMethod == "GET") {
+      $length = sizeof($this->data);
+
+      if ($length == 0) {
+        return $currentController->{$methodName}($this->request);
+      } else if ($length == 1) {
+        return $currentController->{$methodName}($this->request, $this->data[0]);
+      } else if ($length == 2) {
+        return $currentController->{$methodName}($this->request, $this->data[0], $this->data[1]);
+      } else if ($length == 3) {
+        return $currentController->{$methodName}($this->request, $this->data[0], $this->data[1], $this->data[2]);
+      }
+      // 
+    } else {
+
+      $request = new ClientRequest($this->request);
+      return $currentController->{$methodName}($request);
+      // 
+    }
+  }
+
+  private function notFound()
+  {
+    http_response_code(404);
+    die("404 Not found!");
   }
 }

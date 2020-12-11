@@ -17,6 +17,7 @@ class RouteSchema
   private string $routeName;
   private string $uri;
   private $handler;
+  private $view;
 
   /**
    * RouteSchema Constructor
@@ -25,11 +26,12 @@ class RouteSchema
    * @param string $uri
    * @param mixed $handler
    */
-  public function __construct(string $routeName, string $uri, $handler)
+  public function __construct(string $routeName, string $uri, $handler, $view = null)
   {
     $this->routeName = $routeName;
     $this->uri = $uri;
     $this->handler = $handler;
+    $this->view = $view;
   }
 
   /**
@@ -53,6 +55,18 @@ class RouteSchema
   public function setUri(string $uri)
   {
     $this->uri = $uri;
+    return $this;
+  }
+
+  /**
+   * setView function
+   * 
+   * @param string $view
+   * @return RouteSchema $this
+   */
+  public function setView(string $view)
+  {
+    $this->view = $view;
     return $this;
   }
 
@@ -86,6 +100,16 @@ class RouteSchema
   public function getUri()
   {
     return $this->uri;
+  }
+
+  /**
+   * getView function
+   * 
+   * @return string $this->view
+   */
+  public function getView()
+  {
+    return $this->view;
   }
 
   /**

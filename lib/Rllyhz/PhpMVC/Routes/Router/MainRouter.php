@@ -7,6 +7,9 @@
 
 namespace Lib\Rllyhz\PhpMVC\Routes\Router;
 
+use Lib\Rllyhz\PhpMVC\Bootstrap\Construct\Application;
+use Lib\Rllyhz\PhpMVC\Helpers\RequireHelper;
+
 /**
  * Class MainRouter
  * 
@@ -76,6 +79,14 @@ class MainRouter implements RouterInterface
 
   public static function view(string $uri, string $view)
   {
-    echo "Viewing..";
+    $router = self::getRouter();
+
+    $uri = $router->validateUri($uri);
+    $routeName = $router->getRouteNameFromUri($uri);
+
+    $route = new RouteSchema($routeName, $uri, null, $view);
+
+    return $router
+      ->addRoute($route, MainRouter::$GET_METHOD);
   }
 }
