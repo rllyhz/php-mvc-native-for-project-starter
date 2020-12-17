@@ -41,6 +41,15 @@
       text-align: center;
     }
 
+    .container .content p a {
+      text-decoration: none;
+      color: blueviolet;
+    }
+
+    .container .content p a:hover {
+      text-decoration: underline;
+    }
+
     .container .content .links {
       margin-top: 6rem;
       padding: 1rem;
@@ -73,7 +82,7 @@
       <h2>Welcome to PHP MVCiers for Starter Project</h2>
     </div>
     <div class="content">
-      <p>&copy; Built by Rllyhz.</p>
+      <p>&copy; Built by <a href="https://www.github.com/rllyhz" target="_blank">Rllyhz</a>.</p>
 
       <div class="links">
         <a href="https://www.github.com/rllyhz" target="_blank">Github</a>

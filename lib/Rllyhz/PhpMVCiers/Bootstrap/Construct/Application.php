@@ -8,6 +8,7 @@
 namespace Lib\Rllyhz\PhpMVCiers\Bootstrap\Construct;
 
 use App\Core\Route;
+use Lib\Rllyhz\PhpMVCiers\Exception\DevException\ExceptionBuilder;
 use Lib\Rllyhz\PhpMVCiers\Helpers\AppHelper;
 use Lib\Rllyhz\PhpMVCiers\Helpers\RequireHelper;
 use Lib\Rllyhz\PhpMVCiers\Helpers\RouterHelper;
@@ -27,6 +28,18 @@ use Lib\Rllyhz\PhpMVCiers\Routes\Router\RouteSchema;
  */
 class Application
 {
+  /**
+   * @var string $debug;
+   * 
+   * For debugging purpose.
+   */
+  private array $debug = [
+    "title" => "",
+    "message" => "",
+    "file" => "",
+    "line" => 0
+  ];
+
   /**
    * @var string $rootDirectory;
    */
@@ -86,6 +99,13 @@ class Application
     AppHelper::defineConstant(
       AppHelper::$CONFIG_FOLDER,
       $this->rootDirectory . DIRECTORY_SEPARATOR . "config"
+    );
+
+    $exceptionFolder = $this->rootDirectory . DIRECTORY_SEPARATOR . "lib" . DIRECTORY_SEPARATOR . "Rllyhz" . DIRECTORY_SEPARATOR . "PhpMVCiers" . DIRECTORY_SEPARATOR . "Exception";
+
+    AppHelper::defineConstant(
+      AppHelper::$EXCEPTION_FOLDER,
+      $exceptionFolder
     );
 
     AppHelper::defineConstant(
@@ -177,8 +197,8 @@ class Application
         }
       }
 
-      $this->notFound();
       // throw an Error
+      $this->notFound();
     }
   }
 
@@ -215,10 +235,15 @@ class Application
 
       if (RequireHelper::fileExists($fileView)) {
         return RequireHelper::file($fileView);
+        // 
       } else {
-        // $this->notFound();
+        $this->debug["title"] = "View Not Found";
+        $this->debug["file"] = __FILE__;
+        $this->debug["line"] = -1;
+        $this->debug["message"] = "File `" . $fileView . "` not found!";
+
         // throw an Error
-        return;
+        return $this->break();
       }
       // 
     }
@@ -234,9 +259,15 @@ class Application
 
       if (isset($requestURIArray[$key])) {
         array_push($this->params, [$value => $requestURIArray[$key]]);
+        // 
       } else {
-        return $this->notFound();
+        $this->debug["title"] = "Fatal Error";
+        $this->debug["file"] = __FILE__;
+        $this->debug["line"] = -1;
+        $this->debug["message"] = "Something went wrong!";
+
         // throw an Error
+        return $this->break();
       }
     }
 
@@ -317,9 +348,13 @@ class Application
 
       // check valid controller and method name
       if (strpos($controllerFormat, "@") == false) {
-        // $this->notFound();
+        $this->debug["title"] = "Error Routing!";
+        $this->debug["file"] = $this->rootDirectory . DIRECTORY_SEPARATOR . "routes" . DIRECTORY_SEPARATOR . "routes.php";
+        $this->debug["line"] = -1;
+        $this->debug["message"] = "Controller given in routes declaration is not valid";
+
         // throw an Error
-        return;
+        return $this->break();
       }
 
       $array = explode("@", $controllerFormat);
@@ -344,9 +379,13 @@ class Application
     );
 
     if (!RequireHelper::fileExists($controllerFile)) {
-      // $this->notFound();
+      $this->debug["title"] = "Controller Not Found";
+      $this->debug["file"] = __FILE__;
+      $this->debug["line"] = -1;
+      $this->debug["message"] = "Controller `" . $controllerFile . "` doesn't exist!";
+
       // throw an Error
-      return;
+      return $this->break();
     }
 
     /**
@@ -356,9 +395,13 @@ class Application
     $currentController = new $controllerClass();
 
     if (!method_exists($currentController, $methodName)) {
+      $this->debug["title"] = "Method Not Found";
+      $this->debug["file"] = __FILE__;
+      $this->debug["line"] = -1;
+      $this->debug["message"] = "Method `" . $methodName . "` in `" . $controllerClass . "` doesn't exist!";
+
       // throw an Error
-      // $this->notFound();
-      return;
+      return $this->break();
     }
 
     /**
@@ -388,6 +431,7 @@ class Application
   private function notFound()
   {
     http_response_code(404);
+
     $fileNotFoundView = RequireHelper::getValidFormatFile(
       constant(AppHelper::$NOT_FOUND_VIEW),
       constant(AppHelper::$VIEWS_FOLDER)
@@ -398,5 +442,20 @@ class Application
     }
 
     return die("Not found!");
+  }
+
+  private function break()
+  {
+    $exceptionDirectory = constant(AppHelper::$EXCEPTION_FOLDER);
+
+    return ExceptionBuilder::build(
+      $exceptionDirectory,
+      ExceptionBuilder::$TYPE_ERROR,
+      $this->debug["title"],
+      $this->debug["message"]
+    )
+      ->setProperty($this->debug["file"], $this->debug["line"])
+      // ->setMessage($this->debug["message"])
+      ->render();
   }
 }

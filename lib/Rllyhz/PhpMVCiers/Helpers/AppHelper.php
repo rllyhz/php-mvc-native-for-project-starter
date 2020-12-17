@@ -23,6 +23,7 @@ class AppHelper
   public static string $VIEWS_FOLDER = "VIEWS_FOLDER";
   public static string $MIGRATION_FOLDER = "MIGRATION_FOLDER";
   public static string $CONFIG_FOLDER = "CONFIG_FOLDER";
+  public static string $EXCEPTION_FOLDER = "EXCEPTION_FOLDER";
 
   public static string $NOT_FOUND_VIEW = "NOT_FOUND_VIEW";
 

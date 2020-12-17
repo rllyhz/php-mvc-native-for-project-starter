@@ -5,13 +5,20 @@
  * @link https://github.com/rllyhz
  */
 
-namespace Lib\Rllyhz\PhpMVCiers\Exception\DevExcption;
+namespace Lib\Rllyhz\PhpMVCiers\Exception\DevException;
 
+/**
+ * Interface ExceptionInterface
+ * 
+ * @package Lib\Rllyhz\PhpMVCiers\Exception\DevExcption
+ */
 interface ExceptionInterface
 {
-  function setProperty(string $file, string $line);
+  function setProperty(string $filename, int $linePosition);
 
   function setMessage(string $message);
 
   function showError();
+
+  function render();
 }
